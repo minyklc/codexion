@@ -1,36 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   routine.c                                          :+:      :+:    :+:   */
+/*   helper.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: msuizu <msuizu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/11 10:33:42 by msuizu            #+#    #+#             */
-/*   Updated: 2026/03/11 10:33:45 by msuizu           ###   ########.fr       */
+/*   Created: 2026/03/13 10:00:42 by msuizu            #+#    #+#             */
+/*   Updated: 2026/03/13 10:00:43 by msuizu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "codexion.h"
+#include "codexion.h"
 
-// int	codetime(int ms)
-// {
-// 	usleep(ms);
-// 	return (0);
-// }
-
-// int	debugtime(int ms)
-// {
-// 	usleep(ms);
-// 	return (0);
-// }
-
-// int	refactortime(int ms)
-// {
-// 	usleep(ms);
-// 	return (0);
-// }
-
-// void	*thread_routine(void *arg)
-// {
-// 	codetime(arg);
-// }
+char	*need_args(void)
+{
+	return ("./a.out {nb_coders} {burnout_time} {compile_time}"
+			" {debug_time} {refactor_time} {minimum_compile_nb}"
+			" {dongle_cooldown} {scheduler}\n");
+}

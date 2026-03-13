@@ -18,22 +18,24 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <sys/time.h>
+# include <string.h>
 
-typedef struct s_package
+typedef struct s_pack
 {
 	char	*scheduler;
-	int		nb_coders;
+	int		coders;
 	int		burnout;
 	int		compile;
 	int		debug;
 	int		refactor;
 	int		compile_times;
 	int		cooldown;
-}		t_package;
+}		t_pack;
 
 typedef struct s_dongle
 {
 	int	n;
+	int	taken;
 	int	cooldown;
 }		t_dongle;
 
@@ -51,7 +53,14 @@ typedef struct s_mutex
 	int				count;
 }		t_mutex;
 
-void	*thread_create(void *arg);
-void	*thread_routine(void *arg);
+//codexion
+void		*thread_create(void *arg);
+void		*thread_routine(void *arg);
+int			is_valid(char **args);
+t_pack		check_args(char **args);
+char		*need_args(void);
+
+//delete after finish part
+void	print_helper(int limit, t_thread *stack);
 
 #endif
