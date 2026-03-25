@@ -21,21 +21,70 @@ char	*need_args(void)
 
 int timediff(struct timeval *start, struct timeval *end)
 {
-  return (end->tv_usec / 1000 - start->tv_usec / 1000);
+  return ((end->tv_sec * 1000 + end->tv_usec / 1000) - 
+  			(start->tv_sec * 1000 + start->tv_usec / 1000));
 }
 
-int	check_compile_time(t_thread **threads)
+void	takedongle(t_thread *thread)
 {
-	int	i;
-	t_thread	*stack;
+	struct timeval	now;
 
-	i = 0;
-	stack = *threads;
-	while (i < stack[0].pack->coders)
-	{
-		if (stack[i].turn < stack[0].pack->compile_times)
-			return (1);
-		i++;
-	}
-	return (0);
+	pthread_mutex_lock(&(*thread).left->mutex);
+	while ((*thread).left->state == 1)
+		pthread_cond_wait(&(*thread).left->cond, &(*thread).left->mutex);
+	(*thread).left->state = 1;
+	pthread_mutex_unlock(&(*thread).left->mutex);
+	pthread_mutex_lock(&(*thread).sim->log_mutex);
+	gettimeofday(&now, NULL);
+	printf("%i %i has taken a dongle\n", timediff(&(*thread).sim->start, &now), (*thread).n);
+	pthread_mutex_unlock(&(*thread).sim->log_mutex);
+	pthread_mutex_lock(&(*thread).right->mutex);
+	while ((*thread).right->state == 1)
+		pthread_cond_wait(&(*thread).right->cond, &(*thread).right->mutex);
+	(*thread).right->state = 1;
+	pthread_mutex_unlock(&(*thread).right->mutex);
+	pthread_mutex_lock(&(*thread).sim->log_mutex);
+	gettimeofday(&now, NULL);
+	printf("%i %i has taken a dongle\n", timediff(&(*thread).sim->start, &now), (*thread).n);
+	pthread_mutex_unlock(&(*thread).sim->log_mutex);
 }
+
+void	rtakedongle(t_thread *thread)
+{
+	struct timeval	now;
+
+	pthread_mutex_lock(&(*thread).right->mutex);
+	while ((*thread).right->state == 1)
+		pthread_cond_wait(&(*thread).right->cond, &(*thread).right->mutex);
+	(*thread).right->state = 1;
+	pthread_mutex_unlock(&(*thread).right->mutex);
+	pthread_mutex_lock(&(*thread).sim->log_mutex);
+	gettimeofday(&now, NULL);
+	printf("%i %i has taken a dongle\n", timediff(&(*thread).sim->start, &now), (*thread).n);
+	pthread_mutex_unlock(&(*thread).sim->log_mutex);
+	pthread_mutex_lock(&(*thread).left->mutex);
+	while ((*thread).left->state == 1)
+		pthread_cond_wait(&(*thread).left->cond, &(*thread).left->mutex);
+	(*thread).left->state = 1;
+	pthread_mutex_unlock(&(*thread).left->mutex);
+	pthread_mutex_lock(&(*thread).sim->log_mutex);
+	gettimeofday(&now, NULL);
+	printf("%i %i has taken a dongle\n", timediff(&(*thread).sim->start, &now), (*thread).n);
+	pthread_mutex_unlock(&(*thread).sim->log_mutex);
+}
+
+// int	check_compile_time(t_thread **threads)
+// {
+// 	int	i;
+// 	t_thread	*stack;
+
+// 	i = 0;
+// 	stack = *threads;
+// 	while (i < stack[0].pack->coders)
+// 	{
+// 		if (stack[i].turn < stack[0].pack->compile_times)
+// 			return (1);
+// 		i++;
+// 	}
+// 	return (0);
+// }

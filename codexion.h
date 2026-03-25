@@ -33,6 +33,14 @@ typedef struct s_pack
 	int		start;
 }		t_pack;
 
+typedef struct	s_sim
+{
+	pthread_mutex_t	log_mutex;
+	struct timeval	start;
+	// int				start;
+	pthread_cond_t	cond;
+}		t_sim;
+
 typedef struct s_dongle
 {
 	int				n;
@@ -48,18 +56,13 @@ typedef struct s_thread
 	int				n;
 	int				turn;
 	t_pack			*pack;
-	struct timeval	start;
-	struct timeval	last;
-	pthread_mutex_t	*print_m;
+	t_sim			*sim;
+	// struct timeval	last;
+	// struct timeval	start;
+	// pthread_mutex_t	*print_m;
 	t_dongle		*left;
 	t_dongle		*right;
 }		t_thread;
-
-typedef struct	s_sim
-{
-	pthread_mutex_t	print_mutex;
-	pthread_cond_t	cond;
-}		t_sim;
 
 //codexion
 int			prologue(char **argv, t_pack *args, t_thread **stack, t_dongle **dongles);
@@ -72,6 +75,8 @@ int			is_valid(char **args);
 t_pack		check_args(char **args);
 char		*need_args(void);
 int 		timediff(struct timeval *start, struct timeval *end);
+void		takedongle(t_thread *thread);
+void		rtakedongle(t_thread *thread);
 
 //delete after finish part
 void	print_helper(int limit, t_thread *stack);

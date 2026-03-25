@@ -27,16 +27,17 @@ int	prologue(char **argv, t_pack *args, t_thread **stack, t_dongle **dongles)
 int	assign_args(t_thread **stack, t_dongle **dongles, t_pack *args)
 {
 	int	i;
-	int	r;
-	pthread_mutex_t	mutex;
+	// int	r;
+	// pthread_mutex_t	mutex;
+	t_sim		sim;
 
 	i = 0;
-	pthread_mutex_init(&mutex, NULL);
+	// gettimeofday(&sim.start, NULL);
+	pthread_mutex_init(&sim.log_mutex, NULL);
 	while (i < (*args).coders)
 	{
 		(*stack)[i].pack = &(*args);
-		(*stack)[i].print_m = &mutex;
-		// (*stack)[i].start = gettimeofday(NULL, NULL);
+		(*stack)[i].sim = &sim;
 		(*stack)[i].turn = 0;
 		(*stack)[i].n = i + 1;
 		(*dongles)[i].n = i;
@@ -48,14 +49,7 @@ int	assign_args(t_thread **stack, t_dongle **dongles, t_pack *args)
 		(*stack)[i].right = &(*dongles)[i + 1];
 		if (i == (*args).coders - 1)
 			(*stack)[i].right = &(*dongles)[0];
-		r = pthread_create(&(*stack)[i].th, NULL,
-			thread_create, (void*)&(*stack)[i].n); // maybe ??
-		if (r)
-			return (printf("not enough resources for new thread"), 1);
 		i++;
 	}
-	i = -1;
-	while (++i < (*args).coders)
-		pthread_join((*stack)[i].th, NULL);
 	return (0);
 }
