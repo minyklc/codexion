@@ -17,10 +17,11 @@ int	main(int argc, char *argv[])
 	t_thread		*stack;
 	t_pack			args;
 	t_dongle		*dongles;
+	t_sim			sim;
 
 	if (argc != 9 || prologue(argv, &args, &stack, &dongles))
 		return (printf("%s", need_args()), 1);
-	if (assign_args(&stack, &dongles, &args))
+	if (assign_args(&stack, &dongles, &args, &sim))
 		return (free(stack), free(dongles), 1);
 	if (gearing(&stack))
 		return (free(stack), free(dongles), 1);

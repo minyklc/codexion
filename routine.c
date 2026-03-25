@@ -64,9 +64,13 @@ void	*thread_routine(void *arg)
 	{
 		// printf("%i and %i\n", (*thread).n, (*thread).pack->coders);
 		if ((*thread).n == (*thread).pack->coders)
+		{
 			rtakedongle(&(*thread));
+		}
 		else
+		{
 			takedongle(&(*thread));
+		}
 		//codetime
 		compiletime(args.compile, &(*thread));
 		debugtime(args.debug, &(*thread));

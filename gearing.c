@@ -15,8 +15,6 @@
 int	gearing(t_thread **threads)
 {
 	t_thread	*stack;
-	// struct timeval	start;
-	// t_dongle	*dongle;
 	int			i;
 
 	i = -1;
@@ -29,8 +27,6 @@ int	gearing(t_thread **threads)
 	{
 		// printf("le turn: %i\n", stack[0].turn);
 		pthread_create(&stack[i].th, NULL, thread_routine, &stack[i]);
-		// usleep(100);
-		// pthread_join(stack[i].th, NULL);
 		i++;
 	}
 	i = -1;

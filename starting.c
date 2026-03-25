@@ -24,20 +24,16 @@ int	prologue(char **argv, t_pack *args, t_thread **stack, t_dongle **dongles)
 	return (0);
 }
 
-int	assign_args(t_thread **stack, t_dongle **dongles, t_pack *args)
+int	assign_args(t_thread **stack, t_dongle **dongles, t_pack *args, t_sim *sim)
 {
 	int	i;
-	// int	r;
-	// pthread_mutex_t	mutex;
-	t_sim		sim;
 
 	i = 0;
-	// gettimeofday(&sim.start, NULL);
-	pthread_mutex_init(&sim.log_mutex, NULL);
+	pthread_mutex_init(&(*sim).log_mutex, NULL);
 	while (i < (*args).coders)
 	{
 		(*stack)[i].pack = &(*args);
-		(*stack)[i].sim = &sim;
+		(*stack)[i].sim = &(*sim);
 		(*stack)[i].turn = 0;
 		(*stack)[i].n = i + 1;
 		(*dongles)[i].n = i;

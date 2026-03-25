@@ -66,7 +66,7 @@ typedef struct s_thread
 
 //codexion
 int			prologue(char **argv, t_pack *args, t_thread **stack, t_dongle **dongles);
-int			assign_args(t_thread **stack, t_dongle **dongles, t_pack *args);
+int			assign_args(t_thread **stack, t_dongle **dongles, t_pack *args, t_sim *sim);
 int			gearing(t_thread **threads);
 int			check_compile_time(t_thread **threads);
 void		*thread_create(void *arg);
