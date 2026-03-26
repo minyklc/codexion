@@ -23,12 +23,12 @@ void	compiletime(int ms, t_thread *thread)
 	usleep(ms * 1000);
 	pthread_mutex_lock(&(*thread).left->mutex);
 	(*thread).left->state = 0;
-	pthread_mutex_unlock(&(*thread).left->mutex);
 	pthread_cond_broadcast(&(*thread).left->cond);
+	pthread_mutex_unlock(&(*thread).left->mutex);
 	pthread_mutex_lock(&(*thread).right->mutex);
 	(*thread).right->state = 0;
-	pthread_mutex_unlock(&(*thread).right->mutex);
 	pthread_cond_broadcast(&(*thread).right->cond);
+	pthread_mutex_unlock(&(*thread).right->mutex);
 }
 
 void	debugtime(int ms, t_thread *thread)
