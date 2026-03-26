@@ -63,7 +63,7 @@ void	*thread_routine(void *arg)
 	while ((*thread).turn < (*thread).pack->compile_times)
 	{
 		// printf("%i and %i\n", (*thread).n, (*thread).pack->coders);
-		if ((*thread).n == (*thread).pack->coders)
+		if ((*thread).n % 2 == 0)
 		{
 			rtakedongle(&(*thread));
 		}
