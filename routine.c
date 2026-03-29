@@ -82,10 +82,10 @@ void	*thread_routine(void *arg)
 		compiletime(args.compile, &(*thread));
 		release_dongle(args.cooldown, &(*thread));
 		if (!(*thread).sim->onthemove)
-			return (release_dongle(0, &(*thread)), NULL);
+			return (NULL);
 		debugtime(args.debug, &(*thread));
 		if (!(*thread).sim->onthemove)
-			return (release_dongle(0, &(*thread)), NULL);
+			return (NULL);
 		refactortime(args.refactor, &(*thread));
 		// (*thread).turn++;
 	}
