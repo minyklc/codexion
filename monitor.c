@@ -32,18 +32,34 @@ void	*monitor_routine(void *arg)
 	args = (t_monitor*)arg;
 	stack = *(*args).stack;
 	i = 0;
-	while (i < stack[0].pack->coders && args->on)
+	while (i < stack[0].pack->coders)
 	{
-		if (!stack[0].sim->onthemove)
+		pthread_mutex_lock(&stack[i].sim->time_mutex);
+		if (!args->on)
+		{
+			pthread_mutex_unlock(&stack[i].sim->time_mutex);
 			return (NULL);
+		}
+		if (!stack[i].sim->onthemove)
+		{
+			pthread_mutex_unlock(&stack[i].sim->time_mutex);
+			return (NULL);
+		}
 		gettimeofday(&now, NULL);
 		if (stack[i].turn == 0)
 		{
 			if (timediff(&stack[i].sim->start, &now) >= stack[0].pack->burnout)
+			{
+				pthread_mutex_unlock(&stack[i].sim->time_mutex);
 				return (has_burned(&stack, i), NULL);
+			}
 		}
 		else if (timediff(&stack[i].last, &now) >= stack[0].pack->burnout)
+		{
+			pthread_mutex_unlock(&stack[i].sim->time_mutex);
 			return (has_burned(&stack, i), NULL);
+		}
+		pthread_mutex_unlock(&stack[i].sim->time_mutex);
 		if (i == stack[0].pack->coders - 1)
 			i = -1;
 		usleep(1000);
