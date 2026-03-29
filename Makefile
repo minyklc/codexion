@@ -9,6 +9,7 @@ gearing.c \
 helper.c \
 main.c \
 routine.c \
+monitor.c \
 starting.c
 
 OBJS= $(SRCS:.c=.o)
@@ -16,16 +17,16 @@ OBJS= $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-    $(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
 %.o: %.c codexion.h
-    $(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-    $(RM) $(OBJS)
+	$(RM) $(OBJS)
 
 fclean: clean
-    $(RM) $(NAME)
+	$(RM) $(NAME)
 
 re: fclean all
 
