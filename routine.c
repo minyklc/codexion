@@ -69,25 +69,24 @@ void	*thread_routine(void *arg)
 
 	thread = &(*(t_thread*)arg);
 	args = *(*thread).pack;
-	while ((*thread).sim->onthemove && (*thread).turn < (*thread).pack->compile_times)
+	while ((*thread).turn < (*thread).pack->compile_times)
 	{
-		if (!(*thread).sim->onthemove)
+		if (!is_walking(&thread))
 			return (release_dongle(0, &(*thread)), NULL);
 		if ((*thread).n % 2 == 0)
 			rtakedongle(&(*thread));
 		else
 			takedongle(&(*thread));
-		if (!(*thread).sim->onthemove)
+		if (!is_walking(&thread))
 			return (release_dongle(0, &(*thread)), NULL);
 		compiletime(args.compile, &(*thread));
 		release_dongle(args.cooldown, &(*thread));
-		if (!(*thread).sim->onthemove)
+		if (!is_walking(&thread))
 			return (NULL);
 		debugtime(args.debug, &(*thread));
-		if (!(*thread).sim->onthemove)
+		if (!is_walking(&thread))
 			return (NULL);
 		refactortime(args.refactor, &(*thread));
-		// (*thread).turn++;
 	}
 	return (release_dongle(0, &(*thread)), NULL);
 }

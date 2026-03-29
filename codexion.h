@@ -86,6 +86,9 @@ int 		timediff(struct timeval *start, struct timeval *end);
 void		takedongle(t_thread *thread);
 void		rtakedongle(t_thread *thread);
 
+//check_args
+int			is_walking(t_thread	**thread)
+
 //delete after finish part
 void		print_helper(int limit, t_thread *stack);
 

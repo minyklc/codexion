@@ -95,6 +95,18 @@ void	rtakedongle(t_thread *thread)
 	pthread_mutex_unlock(&(*thread).sim->log_mutex);
 }
 
+int	is_walking(t_thread	**thread)
+{
+	int	state;
+	
+	state = 0;
+	pthread_mutex_lock(&(**thread).sim->time_mutex);
+	if ((**thread).sim->onthemove)
+		state = 1;
+	pthread_mutex_unlock(&(**thread).sim->time_mutex);
+	return (state);
+}
+
 // int	check_compile_time(t_thread **threads)
 // {
 // 	int	i;
