@@ -47,6 +47,7 @@ t_pack	check_args(char **args)
 	i = 0;
 	data.coders = atoi(args[++i]);
 	data.burnout = atoi(args[++i]);
+	// printf("le burnout du atoi: %i\n", data.burnout);
 	data.compile = atoi(args[++i]);
 	data.debug = atoi(args[++i]);
 	data.refactor = atoi(args[++i]);

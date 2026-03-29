@@ -32,6 +32,11 @@ void	takedongle(t_thread *thread)
 	pthread_mutex_lock(&(*thread).left->mutex);
 	while ((*thread).left->state == 1)
 		pthread_cond_wait(&(*thread).left->cond, &(*thread).left->mutex);
+	if (!(*thread).sim->onthemove)
+	{
+		pthread_mutex_unlock(&(*thread).left->mutex);
+		return ;
+	}
 	(*thread).left->state = 1;
 	pthread_mutex_unlock(&(*thread).left->mutex);
 	pthread_mutex_lock(&(*thread).sim->log_mutex);
@@ -41,6 +46,12 @@ void	takedongle(t_thread *thread)
 	pthread_mutex_lock(&(*thread).right->mutex);
 	while ((*thread).right->state == 1)
 		pthread_cond_wait(&(*thread).right->cond, &(*thread).right->mutex);
+	// printf("ouais ouais ouais %i\n", (*thread).sim->onthemove);
+	if (!(*thread).sim->onthemove)
+	{
+		pthread_mutex_unlock(&(*thread).right->mutex);
+		return ;
+	}
 	(*thread).right->state = 1;
 	pthread_mutex_unlock(&(*thread).right->mutex);
 	pthread_mutex_lock(&(*thread).sim->log_mutex);
@@ -56,6 +67,11 @@ void	rtakedongle(t_thread *thread)
 	pthread_mutex_lock(&(*thread).right->mutex);
 	while ((*thread).right->state == 1)
 		pthread_cond_wait(&(*thread).right->cond, &(*thread).right->mutex);
+	if (!(*thread).sim->onthemove)
+	{
+		pthread_mutex_unlock(&(*thread).right->mutex);
+		return ;
+	}
 	(*thread).right->state = 1;
 	pthread_mutex_unlock(&(*thread).right->mutex);
 	pthread_mutex_lock(&(*thread).sim->log_mutex);
@@ -65,6 +81,12 @@ void	rtakedongle(t_thread *thread)
 	pthread_mutex_lock(&(*thread).left->mutex);
 	while ((*thread).left->state == 1)
 		pthread_cond_wait(&(*thread).left->cond, &(*thread).left->mutex);
+	// printf("ouais ouais ouais %i\n", (*thread).sim->onthemove);
+	if (!(*thread).sim->onthemove)
+	{
+		pthread_mutex_unlock(&(*thread).left->mutex);
+		return ;
+	}
 	(*thread).left->state = 1;
 	pthread_mutex_unlock(&(*thread).left->mutex);
 	pthread_mutex_lock(&(*thread).sim->log_mutex);

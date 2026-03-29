@@ -35,10 +35,11 @@ typedef struct s_pack
 
 typedef struct	s_sim
 {
+	int				onthemove;
 	pthread_mutex_t	log_mutex;
+	pthread_mutex_t	time_mutex;
 	struct timeval	start;
-	// int				start;
-	pthread_cond_t	cond;
+	pthread_cond_t	stop;
 }		t_sim;
 
 typedef struct s_dongle
@@ -57,12 +58,18 @@ typedef struct s_thread
 	int				turn;
 	t_pack			*pack;
 	t_sim			*sim;
-	// struct timeval	last;
-	// struct timeval	start;
-	// pthread_mutex_t	*print_m;
+	struct timeval	last;
 	t_dongle		*left;
 	t_dongle		*right;
 }		t_thread;
+
+typedef struct s_monitor
+{
+	pthread_t	th;
+	int			on;
+	// int			burnout;
+	t_thread	**stack;
+}		t_monitor;
 
 //codexion
 int			prologue(char **argv, t_pack *args, t_thread **stack, t_dongle **dongles);
@@ -71,6 +78,7 @@ int			gearing(t_thread **threads);
 int			check_compile_time(t_thread **threads);
 void		*thread_create(void *arg);
 void		*thread_routine(void *arg);
+void		*monitor_routine(void *arg);
 int			is_valid(char **args);
 t_pack		check_args(char **args);
 char		*need_args(void);
@@ -79,6 +87,6 @@ void		takedongle(t_thread *thread);
 void		rtakedongle(t_thread *thread);
 
 //delete after finish part
-void	print_helper(int limit, t_thread *stack);
+void		print_helper(int limit, t_thread *stack);
 
 #endif

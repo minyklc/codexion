@@ -29,7 +29,10 @@ int	assign_args(t_thread **stack, t_dongle **dongles, t_pack *args, t_sim *sim)
 	int	i;
 
 	i = 0;
+	(*sim).onthemove = 1;
 	pthread_mutex_init(&(*sim).log_mutex, NULL);
+	pthread_mutex_init(&(*sim).time_mutex, NULL);
+	pthread_cond_init(&(*sim).stop, NULL);
 	while (i < (*args).coders)
 	{
 		(*stack)[i].pack = &(*args);
