@@ -89,6 +89,5 @@ void	*thread_routine(void *arg)
 		refactortime(args.refactor, &(*thread));
 		// (*thread).turn++;
 	}
-	printf("onthemove %i\n", (*thread).sim->onthemove);
 	return (release_dongle(0, &(*thread)), NULL);
 }
