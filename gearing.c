@@ -62,5 +62,6 @@ void	clean_all(t_thread **stack)
 	{
 		pthread_mutex_destroy(&(*stack)[i].left->mutex);
 		pthread_cond_destroy(&(*stack)[i].left->cond);
+		free_queue(&(*stack)[i]);
 	}
 }

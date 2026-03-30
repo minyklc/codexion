@@ -37,20 +37,20 @@ int	is_walking(t_thread	**thread)
 	return (state);
 }
 
-// void	free_queue(t_thread *thread)
-// {
-// 	t_coder	*current;
-// 	t_coder	*next;
+void	free_queue(t_thread *thread)
+{
+	t_coder	*current;
+	t_coder	*next;
 
-// 	current = (*thread).left->queue;
-// 	while (current)
-// 	{
-// 		next = current->next;
-// 		free(current);
-// 		current = next;
-// 	}
-// 	(*thread).left->queue = NULL;
-// }
+	current = (*thread).left->queue;
+	while (current)
+	{
+		next = current->next;
+		free(current);
+		current = next;
+	}
+	(*thread).left->queue = NULL;
+}
 
 
 // int	check_compile_time(t_thread **threads)
