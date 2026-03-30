@@ -101,12 +101,21 @@ int 		timediff(struct timeval *start, struct timeval *end);
 void		takedongle(t_thread *thread);
 void		rtakedongle(t_thread *thread);
 
+//gearing.c
+void		join_all(t_thread **stack, t_monitor *monitor);
+void		clean_all(t_thread **stack);
+
 //check_args.c
 int			is_walking(t_thread	**thread);
 
 //queue.c
-void		add_to_lqueue(t_thread *coder);
-void		add_to_rqueue(t_thread *coder);
+void		add_to_lqueue(t_thread **thread);
+void		add_to_rqueue(t_thread **thread);
+void		rm_to_lqueue(t_thread *thread);
+void		rm_to_rqueue(t_thread *thread);
+
+//helper.c
+void		free_queue(t_thread *thread);
 
 //delete after finish part
 void		print_helper(int limit, t_thread *stack);

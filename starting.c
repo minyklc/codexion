@@ -27,8 +27,10 @@ int	prologue(char **argv, t_pack *args, t_thread **stack, t_dongle **dongles)
 int	assign_args(t_thread **stack, t_dongle **dongles, t_pack *args, t_sim *sim)
 {
 	int	i;
+	// char	c;
 
 	i = 0;
+	// c = 0;
 	(*sim).onthemove = 1;
 	pthread_mutex_init(&(*sim).log_mutex, NULL);
 	pthread_mutex_init(&(*sim).time_mutex, NULL);
@@ -40,6 +42,7 @@ int	assign_args(t_thread **stack, t_dongle **dongles, t_pack *args, t_sim *sim)
 		(*stack)[i].turn = 0;
 		(*stack)[i].n = i + 1;
 		(*dongles)[i].n = i;
+		(*dongles)[i].queue = NULL;
 		(*dongles)[i].state = 0;
 		pthread_cond_init(&(*dongles)[i].cond, NULL);
 		(*dongles)[i].cooldown = (*args).cooldown;

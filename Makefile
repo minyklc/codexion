@@ -10,7 +10,9 @@ helper.c \
 main.c \
 routine.c \
 monitor.c \
+dongle.c \
 scheduler.c \
+queue.c \
 starting.c
 
 OBJS= $(SRCS:.c=.o)
