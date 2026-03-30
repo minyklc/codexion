@@ -49,16 +49,17 @@ void	refactortime(int ms, t_thread *thread)
 	usleep(ms * 1000);
 }
 
-void	release_dongle(int ms, t_thread *thread)
+void	release_dongle(t_thread *thread)
 {
-	usleep(ms * 1000);
 	pthread_mutex_lock(&(*thread).left->mutex);
 	(*thread).left->state = 0;
-	pthread_cond_broadcast(&(*thread).left->cond);
+	gettimeofday(&(*thread).left->last, NULL);
+	pthread_cond_broadcast(&(*thread).left->cond); //add scheduler
 	pthread_mutex_unlock(&(*thread).left->mutex);
 	pthread_mutex_lock(&(*thread).right->mutex);
 	(*thread).right->state = 0;
-	pthread_cond_broadcast(&(*thread).right->cond);
+	gettimeofday(&(*thread).right->last, NULL);
+	pthread_cond_broadcast(&(*thread).right->cond); //add scheduler
 	pthread_mutex_unlock(&(*thread).right->mutex);
 }
 
@@ -72,15 +73,15 @@ void	*thread_routine(void *arg)
 	while ((*thread).turn < (*thread).pack->compile_times)
 	{
 		if (!is_walking(&thread))
-			return (release_dongle(0, &(*thread)), NULL);
+			return (release_dongle(&(*thread)), NULL);
 		if ((*thread).n % 2 == 0)
 			rtakedongle(&(*thread));
 		else
 			takedongle(&(*thread));
 		if (!is_walking(&thread))
-			return (release_dongle(0, &(*thread)), NULL);
+			return (release_dongle(&(*thread)), NULL);
 		compiletime(args.compile, &(*thread));
-		release_dongle(args.cooldown, &(*thread));
+		release_dongle(&(*thread));
 		if (!is_walking(&thread))
 			return (NULL);
 		debugtime(args.debug, &(*thread));
@@ -88,5 +89,5 @@ void	*thread_routine(void *arg)
 			return (NULL);
 		refactortime(args.refactor, &(*thread));
 	}
-	return (release_dongle(0, &(*thread)), NULL);
+	return (release_dongle(&(*thread)), NULL);
 }

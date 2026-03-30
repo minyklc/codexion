@@ -20,6 +20,13 @@
 # include <sys/time.h>
 # include <string.h>
 
+typedef struct s_pack t_pack;
+typedef struct s_sim t_sim;
+typedef struct s_dongle t_dongle;
+typedef struct s_thread t_thread;
+typedef struct s_coder t_coder;
+typedef struct s_monitor t_monitor;
+
 typedef struct s_pack
 {
 	char	*scheduler;
@@ -33,11 +40,12 @@ typedef struct s_pack
 	int		start;
 }		t_pack;
 
-typedef struct	s_sim
+typedef struct s_sim
 {
 	int				onthemove;
 	pthread_mutex_t	log_mutex;
 	pthread_mutex_t	time_mutex;
+	// pthread_mutex_t	dongle_mutex;
 	struct timeval	start;
 	pthread_cond_t	stop;
 }		t_sim;
@@ -48,7 +56,9 @@ typedef struct s_dongle
 	int				state;
 	pthread_mutex_t	mutex;
 	pthread_cond_t	cond;
+	t_coder			*queue;
 	int				cooldown;
+	struct timeval	last;
 }		t_dongle;
 
 typedef struct s_thread
@@ -63,11 +73,16 @@ typedef struct s_thread
 	t_dongle		*right;
 }		t_thread;
 
+typedef struct	s_coder
+{
+	t_thread	*coder;
+	t_coder		*next;
+}		t_coder;
+
 typedef struct s_monitor
 {
 	pthread_t	th;
 	int			on;
-	// int			burnout;
 	t_thread	**stack;
 }		t_monitor;
 
@@ -86,8 +101,12 @@ int 		timediff(struct timeval *start, struct timeval *end);
 void		takedongle(t_thread *thread);
 void		rtakedongle(t_thread *thread);
 
-//check_args
+//check_args.c
 int			is_walking(t_thread	**thread);
+
+//queue.c
+void		add_to_lqueue(t_thread *coder);
+void		add_to_rqueue(t_thread *coder);
 
 //delete after finish part
 void		print_helper(int limit, t_thread *stack);

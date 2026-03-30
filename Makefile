@@ -10,6 +10,7 @@ helper.c \
 main.c \
 routine.c \
 monitor.c \
+scheduler.c \
 starting.c
 
 OBJS= $(SRCS:.c=.o)

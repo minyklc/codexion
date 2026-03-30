@@ -22,10 +22,12 @@ int	gearing(t_thread **threads)
 	stack = *threads;
 	monitor.stack = &stack;
 	monitor.on = 1;
-	// printf("onthemove = %i", stack[0].sim->onthemove);
 	gettimeofday(&stack[0].sim->start, NULL);
 	while (++i < stack[0].pack->coders)
+	{
 		stack[i].last.tv_usec = 0;
+		stack[i].left->last.tv_usec = 0;
+	}
 	i = -1;
 	pthread_create(&monitor.th, NULL, monitor_routine, &monitor);
 	while (++i < stack[0].pack->coders)
@@ -36,8 +38,8 @@ int	gearing(t_thread **threads)
 	pthread_mutex_lock(&stack[0].sim->time_mutex);
 	*(&monitor.on) = 0;
 	pthread_mutex_unlock(&stack[0].sim->time_mutex);
-	// printf("%i\n", monitor.on);
 	pthread_join(monitor.th, NULL);
+	//fonction clean à faire
 	pthread_mutex_destroy(&stack[0].sim->log_mutex);
 	pthread_mutex_destroy(&stack[0].sim->time_mutex);
 	pthread_cond_destroy(&stack[0].sim->stop);
