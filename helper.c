@@ -52,6 +52,14 @@ void	free_queue(t_thread *thread)
 	(*thread).left->queue = NULL;
 }
 
+int	check_length(t_dongle **dongle)
+{
+	if (!(**dongle).queue)
+		return (0);
+	else if ((**dongle).queue->coder && !(**dongle).queue->next)
+		return (1);
+	return (2);
+}
 
 // int	check_compile_time(t_thread **threads)
 // {

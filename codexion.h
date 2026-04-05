@@ -116,6 +116,13 @@ void		rm_to_rqueue(t_thread *thread);
 
 //helper.c
 void		free_queue(t_thread *thread);
+int			check_length(t_dongle **dongle);
+
+//scheduler.c
+void		fifol(t_thread *thread);
+void		fifor(t_thread *thread);
+void		edfl(t_thread *thread);
+void		edfr(t_thread *thread);
 
 //delete after finish part
 void		print_helper(int limit, t_thread *stack);

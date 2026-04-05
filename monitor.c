@@ -65,7 +65,7 @@ void	*monitor_routine(void *arg)
 		pthread_mutex_unlock(&stack[i].sim->time_mutex);
 		if (i == stack[0].pack->coders - 1)
 			i = -1;
-		usleep(1000);
+		usleep(10000);
 		i++;
 	}
 	return (NULL);

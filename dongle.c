@@ -19,21 +19,22 @@ void	takedongle(t_thread *thread)
 
 	pthread_mutex_lock(&(*thread).left->mutex);
 	add_to_lqueue(&thread);
+	// printf("%i\n", (*thread).left->queue->coder->n);
 	while ((*thread).left->state == 1)
 		pthread_cond_wait(&(*thread).left->cond, &(*thread).left->mutex);
-	if ((*thread).turn > 0)
-	{
-		gettimeofday(&now, NULL);
-		diff = timediff(&(*thread).left->last, &now) + (*thread).pack->compile;
-		if (diff < (*thread).pack->cooldown)
-			usleep(((*thread).pack->cooldown - diff) * 1000); //cooldown
-	}
+	(*thread).left->state = 1;
+	// if ((*thread).turn > 0)
+	// {
+	gettimeofday(&now, NULL);
+	diff = timediff(&(*thread).left->last, &now) + (*thread).pack->compile;
+	if (diff < (*thread).pack->cooldown)
+		usleep(((*thread).pack->cooldown - diff) * 1000); //cooldown
+	// }
 	if (!(*thread).sim->onthemove)
 	{
 		pthread_mutex_unlock(&(*thread).left->mutex);
 		return ;
 	}
-	(*thread).left->state = 1;
 	rm_to_lqueue(&(*thread));
 	pthread_mutex_unlock(&(*thread).left->mutex);
 	pthread_mutex_lock(&(*thread).sim->log_mutex);
@@ -45,19 +46,19 @@ void	takedongle(t_thread *thread)
 	add_to_rqueue(&thread);
 	while ((*thread).right->state == 1)
 		pthread_cond_wait(&(*thread).right->cond, &(*thread).right->mutex);
-	if ((*thread).turn > 0)
-	{
-		gettimeofday(&now, NULL);
-		diff = timediff(&(*thread).right->last, &now) + (*thread).pack->compile;
-		if (diff < (*thread).pack->cooldown)
-			usleep(((*thread).pack->cooldown - diff) * 1000); //cooldown
-	}
+	(*thread).right->state = 1;
+	// if ((*thread).turn > 0)
+	// {
+	gettimeofday(&now, NULL);
+	diff = timediff(&(*thread).right->last, &now) + (*thread).pack->compile;
+	if (diff < (*thread).pack->cooldown)
+		usleep(((*thread).pack->cooldown - diff) * 1000); //cooldown
+	// }
 	if (!(*thread).sim->onthemove)
 	{
 		pthread_mutex_unlock(&(*thread).right->mutex);
 		return ;
 	}
-	(*thread).right->state = 1;
 	rm_to_rqueue(&(*thread));
 	pthread_mutex_unlock(&(*thread).right->mutex);
 	pthread_mutex_lock(&(*thread).sim->log_mutex);
@@ -75,19 +76,19 @@ void	rtakedongle(t_thread *thread)
 	add_to_rqueue(&thread);
 	while ((*thread).right->state == 1)
 		pthread_cond_wait(&(*thread).right->cond, &(*thread).right->mutex);
-	if ((*thread).turn > 0)
-	{
-		gettimeofday(&now, NULL);
-		diff = timediff(&(*thread).right->last, &now) + (*thread).pack->compile;
-		if (diff < (*thread).pack->cooldown)
-			usleep(((*thread).pack->cooldown - diff) * 1000); //cooldown
-	}
+	(*thread).right->state = 1;
+	// if ((*thread).turn > 0)
+	// {
+	gettimeofday(&now, NULL);
+	diff = timediff(&(*thread).right->last, &now) + (*thread).pack->compile;
+	if (diff < (*thread).pack->cooldown)
+		usleep(((*thread).pack->cooldown - diff) * 1000); //cooldown
+	// }
 	if (!(*thread).sim->onthemove)
 	{
 		pthread_mutex_unlock(&(*thread).right->mutex);
 		return ;
 	}
-	(*thread).right->state = 1;
 	rm_to_rqueue(&(*thread));
 	pthread_mutex_unlock(&(*thread).right->mutex);
 	pthread_mutex_lock(&(*thread).sim->log_mutex);
@@ -99,19 +100,19 @@ void	rtakedongle(t_thread *thread)
 	add_to_lqueue(&thread);
 	while ((*thread).left->state == 1)
 		pthread_cond_wait(&(*thread).left->cond, &(*thread).left->mutex);
-	if ((*thread).turn > 0)
-	{
-		gettimeofday(&now, NULL);
-		diff = timediff(&(*thread).left->last, &now) + (*thread).pack->compile;
-		if (diff < (*thread).pack->cooldown)
-			usleep(((*thread).pack->cooldown - diff) * 1000); //cooldown
-	}
+	(*thread).left->state = 1;
+	// if ((*thread).turn > 0)
+	// {
+	gettimeofday(&now, NULL);
+	diff = timediff(&(*thread).left->last, &now) + (*thread).pack->compile;
+	if (diff < (*thread).pack->cooldown)
+		usleep(((*thread).pack->cooldown - diff) * 1000); //cooldown
+	// }
 	if (!(*thread).sim->onthemove)
 	{
 		pthread_mutex_unlock(&(*thread).left->mutex);
 		return ;
 	}
-	(*thread).left->state = 1;
 	rm_to_lqueue(&(*thread));
 	pthread_mutex_unlock(&(*thread).left->mutex);
 	pthread_mutex_lock(&(*thread).sim->log_mutex);

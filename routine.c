@@ -54,12 +54,22 @@ void	release_dongle(t_thread *thread)
 	pthread_mutex_lock(&(*thread).left->mutex);
 	(*thread).left->state = 0;
 	gettimeofday(&(*thread).left->last, NULL);
-	pthread_cond_broadcast(&(*thread).left->cond); //add scheduler
+	if (!strcmp("fifo", (*thread).pack->scheduler))
+	{
+		fifol(thread);
+	}
+	else
+	{
+		edfl(thread);
+	}
 	pthread_mutex_unlock(&(*thread).left->mutex);
 	pthread_mutex_lock(&(*thread).right->mutex);
 	(*thread).right->state = 0;
 	gettimeofday(&(*thread).right->last, NULL);
-	pthread_cond_broadcast(&(*thread).right->cond); //add scheduler
+	if (!strcmp("fifo", (*thread).pack->scheduler))
+		fifor(thread);
+	else
+		edfr(thread);
 	pthread_mutex_unlock(&(*thread).right->mutex);
 }
 
