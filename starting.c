@@ -17,8 +17,8 @@ int	prologue(char **argv, t_pack *args, t_thread **stack, t_dongle **dongles)
 	if (is_valid(argv))
 		return (1);
 	*args = check_args(argv);
-	if ((*args).coders < 2)
-		return (printf("nb_coders must be an integer >= 2"), 1);
+	if ((*args).coders < 1)
+		return (printf("nb_coders must be an integer >= 1"), 1);
 	*stack = malloc(sizeof(**stack) * (*args).coders);
 	*dongles = malloc(sizeof(**dongles) * (*args).coders);
 	return (0);

@@ -15,10 +15,19 @@
 void	has_burned(t_thread **stack, int i)
 {
 	struct timeval	now;
+	int				j;
 
+	j = -1;
 	pthread_mutex_lock(&(*stack)[i].sim->time_mutex);
 	*(&(*stack)[i].sim->onthemove) = 0;
 	pthread_mutex_unlock(&(*stack)[i].sim->time_mutex);
+	while (++j < (*stack)[0].pack->coders)
+	{
+		pthread_mutex_lock(&(*stack)[j].left->mutex);
+		(*stack)[j].left->state = 0;
+		pthread_mutex_unlock(&(*stack)[j].left->mutex);
+		pthread_cond_broadcast(&(*stack)[j].left->cond);
+	}
 	pthread_mutex_lock(&(*stack)[i].sim->log_mutex);
 	gettimeofday(&now, NULL);
 	printf("%i %i burned out\n",
