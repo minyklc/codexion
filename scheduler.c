@@ -41,8 +41,9 @@ void	edfl(t_thread *thread)
 	gettimeofday(&now, NULL);
 	if (check_length(&(*thread).left) > 0)
 	{
-		if (timediff(&(*thread).sim->start, &(*thread).last) < 
-			timediff(&(*thread).sim->start, &(*thread).left->queue->coder->last))
+		if (timediff(&(*thread).sim->start,
+				&(*thread).last) < timediff(&(*thread).sim->start,
+				&(*thread).left->queue->coder->last))
 			cond = &(*thread).left->queue->coder->right->cond;
 	}
 	pthread_cond_broadcast(cond);
@@ -55,8 +56,9 @@ void	edfr(t_thread *thread)
 	cond = &(*thread).right->cond;
 	if (check_length(&(*thread).right) > 0)
 	{
-		if (timediff(&(*thread).sim->start, &(*thread).last) < 
-			timediff(&(*thread).sim->start, &(*thread).right->queue->coder->last))
+		if (timediff(&(*thread).sim->start,
+				&(*thread).last) < timediff(&(*thread).sim->start,
+				&(*thread).right->queue->coder->last))
 			cond = &(*thread).right->queue->coder->left->cond;
 	}
 	pthread_cond_broadcast(cond);

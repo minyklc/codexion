@@ -15,7 +15,7 @@
 t_coder	*new_coder(t_thread *thread)
 {
 	t_coder	*coder;
-	
+
 	coder = malloc(sizeof(t_coder));
 	if (!coder)
 		exit(1);

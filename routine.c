@@ -18,7 +18,8 @@ void	compiletime(int ms, t_thread *thread)
 
 	pthread_mutex_lock(&(*thread).sim->log_mutex);
 	gettimeofday(&now, NULL);
-	printf("%i %i is compiling\n", timediff(&(*thread).sim->start, &now), (*thread).n);
+	printf("%i %i is compiling\n", timediff(&(*thread).sim->start, &now),
+		(*thread).n);
 	pthread_mutex_unlock(&(*thread).sim->log_mutex);
 	pthread_mutex_lock(&(*thread).sim->time_mutex);
 	gettimeofday(&(*thread).last, NULL);
@@ -33,7 +34,8 @@ void	debugtime(int ms, t_thread *thread)
 
 	pthread_mutex_lock(&(*thread).sim->log_mutex);
 	gettimeofday(&now, NULL);
-	printf("%i %i is debugging\n", timediff(&(*thread).sim->start, &now), (*thread).n);
+	printf("%i %i is debugging\n", timediff(&(*thread).sim->start, &now),
+		(*thread).n);
 	pthread_mutex_unlock(&(*thread).sim->log_mutex);
 	usleep(ms * 1000);
 }
@@ -44,7 +46,8 @@ void	refactortime(int ms, t_thread *thread)
 
 	pthread_mutex_lock(&(*thread).sim->log_mutex);
 	gettimeofday(&now, NULL);
-	printf("%i %i is refactoring\n", timediff(&(*thread).sim->start, &now), (*thread).n);
+	printf("%i %i is refactoring\n", timediff(&(*thread).sim->start, &now),
+		(*thread).n);
 	pthread_mutex_unlock(&(*thread).sim->log_mutex);
 	usleep(ms * 1000);
 }
@@ -78,7 +81,7 @@ void	*thread_routine(void *arg)
 	t_pack		args;
 	t_thread	*thread;
 
-	thread = &(*(t_thread*)arg);
+	thread = &(*(t_thread *)arg);
 	args = *(*thread).pack;
 	while ((*thread).turn < (*thread).pack->compile_times)
 	{

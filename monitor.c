@@ -21,51 +21,46 @@ void	has_burned(t_thread **stack, int i)
 	pthread_mutex_unlock(&(*stack)[i].sim->time_mutex);
 	pthread_mutex_lock(&(*stack)[i].sim->log_mutex);
 	gettimeofday(&now, NULL);
-	printf("%i %i burned out\n", timediff(&(*stack)[i].sim->start, &now), i+1);
+	printf("%i %i burned out\n",
+		timediff(&(*stack)[i].sim->start, &now), i + 1);
 	pthread_mutex_unlock(&(*stack)[i].sim->log_mutex);
+}
+
+int	check_burned(t_thread *thread)
+{
+	struct timeval	now;
+
+	gettimeofday(&now, NULL);
+	if (!(*thread).turn)
+	{
+		if (timediff(&(*thread).sim->start, &now) >= (*thread).pack->burnout)
+			return (pthread_mutex_unlock(&(*thread).sim->time_mutex), 1);
+	}
+	else if (timediff(&(*thread).last, &now) >= (*thread).pack->burnout)
+		return (pthread_mutex_unlock(&(*thread).sim->time_mutex), 1);
+	return (0);
 }
 
 void	*monitor_routine(void *arg)
 {
-	t_monitor	*args;
-	t_thread	*stack;
-	struct timeval	now;
-	int			i;
+	int				i;
+	t_monitor		*args;
+	t_thread		*stack;
 
-	args = (t_monitor*)arg;
+	args = (t_monitor *)arg;
 	stack = *(*args).stack;
 	i = 0;
 	while (i < stack[0].pack->coders)
 	{
 		pthread_mutex_lock(&stack[i].sim->time_mutex);
-		if (!args->on)
-		{
-			pthread_mutex_unlock(&stack[i].sim->time_mutex);
-			return (NULL);
-		}
-		if (!stack[i].sim->onthemove)
-		{
-			pthread_mutex_unlock(&stack[i].sim->time_mutex);
-			return (NULL);
-		}
-		gettimeofday(&now, NULL);
-		if (stack[i].turn == 0)
-		{
-			if (timediff(&stack[i].sim->start, &now) >= stack[0].pack->burnout)
-			{
-				pthread_mutex_unlock(&stack[i].sim->time_mutex);
-				return (has_burned(&stack, i), NULL);
-			}
-		}
-		else if (timediff(&stack[i].last, &now) >= stack[0].pack->burnout)
-		{
-			pthread_mutex_unlock(&stack[i].sim->time_mutex);
+		if (!args->on || !stack[i].sim->onthemove)
+			return (pthread_mutex_unlock(&stack[i].sim->time_mutex), NULL);
+		if (check_burned(&stack[i]))
 			return (has_burned(&stack, i), NULL);
-		}
 		pthread_mutex_unlock(&stack[i].sim->time_mutex);
 		if (i == stack[0].pack->coders - 1)
 			i = -1;
-		usleep(10000);
+		usleep(1000);
 		i++;
 	}
 	return (NULL);

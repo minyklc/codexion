@@ -12,111 +12,76 @@
 
 #include "codexion.h"
 
-void	takedongle(t_thread *thread)
+int	left(t_thread **thread)
 {
 	struct timeval	now;
 	int				diff;
 
-	pthread_mutex_lock(&(*thread).left->mutex);
-	add_to_lqueue(&thread);
-	// printf("%i\n", (*thread).left->queue->coder->n);
-	while ((*thread).left->state == 1)
-		pthread_cond_wait(&(*thread).left->cond, &(*thread).left->mutex);
-	(*thread).left->state = 1;
-	// if ((*thread).turn > 0)
-	// {
+	pthread_mutex_lock(&(**thread).left->mutex);
+	add_to_lqueue(&(*thread));
+	while ((**thread).left->state == 1)
+		pthread_cond_wait(&(**thread).left->cond, &(**thread).left->mutex);
+	(**thread).left->state = 1;
 	gettimeofday(&now, NULL);
-	diff = timediff(&(*thread).left->last, &now) + (*thread).pack->compile;
-	if (diff < (*thread).pack->cooldown)
-		usleep(((*thread).pack->cooldown - diff) * 1000); //cooldown
-	// }
-	if (!(*thread).sim->onthemove)
+	diff = timediff(&(**thread).left->last, &now) + (**thread).pack->compile;
+	if (diff < (**thread).pack->cooldown)
+		usleep(((**thread).pack->cooldown - diff) * 1000);
+	if (!(**thread).sim->onthemove)
 	{
-		pthread_mutex_unlock(&(*thread).left->mutex);
-		return ;
+		pthread_mutex_unlock(&(**thread).left->mutex);
+		return (1);
 	}
-	rm_to_lqueue(&(*thread));
-	pthread_mutex_unlock(&(*thread).left->mutex);
-	pthread_mutex_lock(&(*thread).sim->log_mutex);
+	rm_to_lqueue(&(**thread));
+	pthread_mutex_unlock(&(**thread).left->mutex);
+	pthread_mutex_lock(&(**thread).sim->log_mutex);
 	gettimeofday(&now, NULL);
-	printf("%i %i has taken a dongle\n", timediff(&(*thread).sim->start, &now), (*thread).n);
-	pthread_mutex_unlock(&(*thread).sim->log_mutex);
-	pthread_mutex_lock(&(*thread).right->mutex);
-//right
-	add_to_rqueue(&thread);
-	while ((*thread).right->state == 1)
-		pthread_cond_wait(&(*thread).right->cond, &(*thread).right->mutex);
-	(*thread).right->state = 1;
-	// if ((*thread).turn > 0)
-	// {
+	printf("%i %i has taken a dongle\n", timediff(&(**thread).sim->start, &now),
+		(**thread).n);
+	pthread_mutex_unlock(&(**thread).sim->log_mutex);
+	return (0);
+}
+
+int	right(t_thread **thread)
+{
+	struct timeval	now;
+	int				diff;
+
+	pthread_mutex_lock(&(**thread).right->mutex);
+	add_to_rqueue(&(*thread));
+	while ((**thread).right->state == 1)
+		pthread_cond_wait(&(**thread).right->cond, &(**thread).right->mutex);
+	(**thread).right->state = 1;
 	gettimeofday(&now, NULL);
-	diff = timediff(&(*thread).right->last, &now) + (*thread).pack->compile;
-	if (diff < (*thread).pack->cooldown)
-		usleep(((*thread).pack->cooldown - diff) * 1000); //cooldown
-	// }
-	if (!(*thread).sim->onthemove)
+	diff = timediff(&(**thread).right->last, &now) + (**thread).pack->compile;
+	if (diff < (**thread).pack->cooldown)
+		usleep(((**thread).pack->cooldown - diff) * 1000);
+	if (!(**thread).sim->onthemove)
 	{
-		pthread_mutex_unlock(&(*thread).right->mutex);
-		return ;
+		pthread_mutex_unlock(&(**thread).right->mutex);
+		return (1);
 	}
-	rm_to_rqueue(&(*thread));
-	pthread_mutex_unlock(&(*thread).right->mutex);
-	pthread_mutex_lock(&(*thread).sim->log_mutex);
+	rm_to_rqueue(&(**thread));
+	pthread_mutex_unlock(&(**thread).right->mutex);
+	pthread_mutex_lock(&(**thread).sim->log_mutex);
 	gettimeofday(&now, NULL);
-	printf("%i %i has taken a dongle\n", timediff(&(*thread).sim->start, &now), (*thread).n);
-	pthread_mutex_unlock(&(*thread).sim->log_mutex);
+	printf("%i %i has taken a dongle\n", timediff(&(**thread).sim->start, &now),
+		(**thread).n);
+	pthread_mutex_unlock(&(**thread).sim->log_mutex);
+	return (0);
+}
+
+void	takedongle(t_thread *thread)
+{
+	if (left(&thread))
+		return ;
+	if (right(&thread))
+		return ;
 }
 
 void	rtakedongle(t_thread *thread)
 {
-	struct timeval	now;
-	int				diff;
-
-	pthread_mutex_lock(&(*thread).right->mutex);
-	add_to_rqueue(&thread);
-	while ((*thread).right->state == 1)
-		pthread_cond_wait(&(*thread).right->cond, &(*thread).right->mutex);
-	(*thread).right->state = 1;
-	// if ((*thread).turn > 0)
-	// {
-	gettimeofday(&now, NULL);
-	diff = timediff(&(*thread).right->last, &now) + (*thread).pack->compile;
-	if (diff < (*thread).pack->cooldown)
-		usleep(((*thread).pack->cooldown - diff) * 1000); //cooldown
-	// }
-	if (!(*thread).sim->onthemove)
-	{
-		pthread_mutex_unlock(&(*thread).right->mutex);
+	if (right(&thread))
 		return ;
-	}
-	rm_to_rqueue(&(*thread));
-	pthread_mutex_unlock(&(*thread).right->mutex);
-	pthread_mutex_lock(&(*thread).sim->log_mutex);
-	gettimeofday(&now, NULL);
-	printf("%i %i has taken a dongle\n", timediff(&(*thread).sim->start, &now), (*thread).n);
-	pthread_mutex_unlock(&(*thread).sim->log_mutex);
-//left
-	pthread_mutex_lock(&(*thread).left->mutex);
-	add_to_lqueue(&thread);
-	while ((*thread).left->state == 1)
-		pthread_cond_wait(&(*thread).left->cond, &(*thread).left->mutex);
-	(*thread).left->state = 1;
-	// if ((*thread).turn > 0)
-	// {
-	gettimeofday(&now, NULL);
-	diff = timediff(&(*thread).left->last, &now) + (*thread).pack->compile;
-	if (diff < (*thread).pack->cooldown)
-		usleep(((*thread).pack->cooldown - diff) * 1000); //cooldown
-	// }
-	if (!(*thread).sim->onthemove)
-	{
-		pthread_mutex_unlock(&(*thread).left->mutex);
+	if (left(&thread))
 		return ;
-	}
-	rm_to_lqueue(&(*thread));
-	pthread_mutex_unlock(&(*thread).left->mutex);
-	pthread_mutex_lock(&(*thread).sim->log_mutex);
-	gettimeofday(&now, NULL);
-	printf("%i %i has taken a dongle\n", timediff(&(*thread).sim->start, &now), (*thread).n);
-	pthread_mutex_unlock(&(*thread).sim->log_mutex);
 }

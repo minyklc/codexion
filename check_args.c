@@ -41,13 +41,12 @@ int	is_valid(char **args)
 
 t_pack	check_args(char **args)
 {
-	t_pack	data;
 	int			i;
+	t_pack		data;
 
 	i = 0;
 	data.coders = atoi(args[++i]);
 	data.burnout = atoi(args[++i]);
-	// printf("le burnout du atoi: %i\n", data.burnout);
 	data.compile = atoi(args[++i]);
 	data.debug = atoi(args[++i]);
 	data.refactor = atoi(args[++i]);

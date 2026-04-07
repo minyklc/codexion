@@ -20,12 +20,12 @@
 # include <sys/time.h>
 # include <string.h>
 
-typedef struct s_pack t_pack;
-typedef struct s_sim t_sim;
-typedef struct s_dongle t_dongle;
-typedef struct s_thread t_thread;
-typedef struct s_coder t_coder;
-typedef struct s_monitor t_monitor;
+typedef struct s_pack		t_pack;
+typedef struct s_sim		t_sim;
+typedef struct s_dongle		t_dongle;
+typedef struct s_thread		t_thread;
+typedef struct s_coder		t_coder;
+typedef struct s_monitor	t_monitor;
 
 typedef struct s_pack
 {
@@ -73,7 +73,7 @@ typedef struct s_thread
 	t_dongle		*right;
 }		t_thread;
 
-typedef struct	s_coder
+typedef struct s_coder
 {
 	t_thread	*coder;
 	t_coder		*next;
@@ -86,27 +86,30 @@ typedef struct s_monitor
 	t_thread	**stack;
 }		t_monitor;
 
-//codexion
-int			prologue(char **argv, t_pack *args, t_thread **stack, t_dongle **dongles);
-int			assign_args(t_thread **stack, t_dongle **dongles, t_pack *args, t_sim *sim);
-int			gearing(t_thread **threads);
-int			check_compile_time(t_thread **threads);
-void		*thread_create(void *arg);
-void		*thread_routine(void *arg);
-void		*monitor_routine(void *arg);
-int			is_valid(char **args);
-t_pack		check_args(char **args);
-char		*need_args(void);
-int 		timediff(struct timeval *start, struct timeval *end);
-void		takedongle(t_thread *thread);
-void		rtakedongle(t_thread *thread);
+//starting.c
+int			prologue(char **argv, t_pack *args, t_thread **stack,
+				t_dongle **dongles);
+int			assign_args(t_thread **stack, t_dongle **dongles, t_pack *args,
+				t_sim *sim);
 
 //gearing.c
+int			gearing(t_thread **threads);
 void		join_all(t_thread **stack, t_monitor *monitor);
 void		clean_all(t_thread **stack);
 
+//routine.c
+void		*thread_routine(void *arg);
+
+//dongle.c
+void		takedongle(t_thread *thread);
+void		rtakedongle(t_thread *thread);
+
+//monitor.c
+void		*monitor_routine(void *arg);
+
 //check_args.c
-int			is_walking(t_thread	**thread);
+int			is_valid(char **args);
+t_pack		check_args(char **args);
 
 //queue.c
 void		add_to_lqueue(t_thread **thread);
@@ -115,16 +118,16 @@ void		rm_to_lqueue(t_thread *thread);
 void		rm_to_rqueue(t_thread *thread);
 
 //helper.c
+char		*need_args(void);
+int			timediff(struct timeval *start, struct timeval *end);
 void		free_queue(t_thread *thread);
 int			check_length(t_dongle **dongle);
+int			is_walking(t_thread	**thread);
 
 //scheduler.c
 void		fifol(t_thread *thread);
 void		fifor(t_thread *thread);
 void		edfl(t_thread *thread);
 void		edfr(t_thread *thread);
-
-//delete after finish part
-void		print_helper(int limit, t_thread *stack);
 
 #endif

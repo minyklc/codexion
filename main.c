@@ -25,7 +25,6 @@ int	main(int argc, char *argv[])
 		return (free(stack), free(dongles), 1);
 	if (gearing(&stack))
 		return (free(stack), free(dongles), 1);
-	// print_helper(args.coders, stack); // trash after
 	free(stack);
 	free(dongles);
 	return (0);
