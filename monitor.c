@@ -25,8 +25,8 @@ void	has_burned(t_thread **stack, int i)
 	{
 		pthread_mutex_lock(&(*stack)[j].left->mutex);
 		(*stack)[j].left->state = 0;
-		pthread_mutex_unlock(&(*stack)[j].left->mutex);
 		pthread_cond_broadcast(&(*stack)[j].left->cond);
+		pthread_mutex_unlock(&(*stack)[j].left->mutex);
 	}
 	pthread_mutex_lock(&(*stack)[i].sim->log_mutex);
 	gettimeofday(&now, NULL);

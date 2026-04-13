@@ -1,7 +1,7 @@
 NAME= codexion
 
 CC= cc
-CFLAGS= -Wall -Wextra -Werror -pthread
+CFLAGS= -Wall -Wextra -Werror -pthread -g
 RM= rm -f
 
 SRCS= check_args.c \

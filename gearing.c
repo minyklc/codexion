@@ -25,7 +25,9 @@ int	gearing(t_thread **threads)
 	gettimeofday(&stack[0].sim->start, NULL);
 	while (++i < stack[0].pack->coders)
 	{
-		stack[i].left->last.tv_usec = stack[0].sim->start.tv_usec;
+    	stack[i].last.tv_usec = stack[0].sim->start.tv_usec;
+    	stack[i].last.tv_sec = stack[0].sim->start.tv_sec;
+		stack[i].left-> last.tv_usec = stack[0].sim->start.tv_usec;
 		stack[i].left->last.tv_sec = stack[0].sim->start.tv_sec;
 	}
 	i = -1;

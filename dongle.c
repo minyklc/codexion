@@ -26,7 +26,7 @@ int	left(t_thread **thread)
 	diff = timediff(&(**thread).left->last, &now) + (**thread).pack->compile;
 	if (diff < (**thread).pack->cooldown)
 		usleep(((**thread).pack->cooldown - diff) * 1000);
-	if (!(**thread).sim->onthemove)
+	if (!is_walking(thread))
 	{
 		pthread_mutex_unlock(&(**thread).left->mutex);
 		return (1);
@@ -55,7 +55,7 @@ int	right(t_thread **thread)
 	diff = timediff(&(**thread).right->last, &now) + (**thread).pack->compile;
 	if (diff < (**thread).pack->cooldown)
 		usleep(((**thread).pack->cooldown - diff) * 1000);
-	if (!(**thread).sim->onthemove)
+	if (!is_walking(thread))
 	{
 		pthread_mutex_unlock(&(**thread).right->mutex);
 		return (1);
