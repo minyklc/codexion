@@ -20,7 +20,11 @@ int	prologue(char **argv, t_pack *args, t_thread **stack, t_dongle **dongles)
 	if ((*args).coders < 1)
 		return (printf("nb_coders must be an integer >= 1\n"), 1);
 	*stack = malloc(sizeof(**stack) * (*args).coders);
+	if (!*stack)
+		return (printf("malloc of stack failed"), 1);
 	*dongles = malloc(sizeof(**dongles) * (*args).coders);
+	if (!*dongles)
+		return (printf("malloc of dongles failed"), 1);
 	return (0);
 }
 

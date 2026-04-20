@@ -19,7 +19,9 @@ void	fifol(t_thread *thread)
 	cond = &(*thread).left->cond;
 	if (check_length(&(*thread).left) > 0)
 		cond = &(*thread).left->queue->coder->right->cond;
+	pthread_mutex_lock(&(*thread).left->mutex);
 	pthread_cond_broadcast(cond);
+	pthread_mutex_unlock(&(*thread).left->mutex);
 }
 
 void	fifor(t_thread *thread)
@@ -29,7 +31,9 @@ void	fifor(t_thread *thread)
 	cond = &(*thread).right->cond;
 	if (check_length(&(*thread).right) > 0)
 		cond = &(*thread).right->queue->coder->left->cond;
+	pthread_mutex_lock(&(*thread).right->mutex);
 	pthread_cond_broadcast(cond);
+	pthread_mutex_unlock(&(*thread).right->mutex);
 }
 
 void	edfl(t_thread *thread)
@@ -46,7 +50,9 @@ void	edfl(t_thread *thread)
 						&now))
 			cond = &(*thread).left->queue->coder->right->cond;
 	}
+	pthread_mutex_lock(&(*thread).left->mutex);
 	pthread_cond_broadcast(cond);
+	pthread_mutex_unlock(&(*thread).left->mutex);
 }
 
 void	edfr(t_thread *thread)
@@ -63,5 +69,7 @@ void	edfr(t_thread *thread)
 			&now))
 			cond = &(*thread).right->queue->coder->left->cond;
 	}
+	pthread_mutex_lock(&(*thread).right->mutex);
 	pthread_cond_broadcast(cond);
+	pthread_mutex_unlock(&(*thread).right->mutex);
 }
