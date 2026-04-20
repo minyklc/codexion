@@ -24,13 +24,11 @@ int	left(t_thread **thread)
 	(**thread).left->state = 1;
 	gettimeofday(&now, NULL);
 	diff = timediff(&(**thread).left->last, &now) + (**thread).pack->compile;
-	if (diff < (**thread).pack->cooldown)
+	if (diff < (**thread).pack->cooldown &&
+		timediff(&(**thread).left->last, &(**thread).sim->start) != 0)
 		usleep(((**thread).pack->cooldown - diff) * 1000);
 	if (!is_walking(thread))
-	{
-		pthread_mutex_unlock(&(**thread).left->mutex);
-		return (1);
-	}
+		return (pthread_mutex_unlock(&(**thread).left->mutex), 1);
 	rm_to_lqueue(&(**thread));
 	pthread_mutex_unlock(&(**thread).left->mutex);
 	pthread_mutex_lock(&(**thread).sim->log_mutex);
@@ -53,13 +51,11 @@ int	right(t_thread **thread)
 	(**thread).right->state = 1;
 	gettimeofday(&now, NULL);
 	diff = timediff(&(**thread).right->last, &now) + (**thread).pack->compile;
-	if (diff < (**thread).pack->cooldown)
+	if (diff < (**thread).pack->cooldown &&
+		timediff(&(**thread).right->last, &(**thread).sim->start) != 0)
 		usleep(((**thread).pack->cooldown - diff) * 1000);
 	if (!is_walking(thread))
-	{
-		pthread_mutex_unlock(&(**thread).right->mutex);
-		return (1);
-	}
+		return (pthread_mutex_unlock(&(**thread).right->mutex), 1);
 	rm_to_rqueue(&(**thread));
 	pthread_mutex_unlock(&(**thread).right->mutex);
 	pthread_mutex_lock(&(**thread).sim->log_mutex);
