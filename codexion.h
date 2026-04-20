@@ -45,7 +45,6 @@ typedef struct s_sim
 	int				onthemove;
 	pthread_mutex_t	log_mutex;
 	pthread_mutex_t	time_mutex;
-	// pthread_mutex_t	dongle_mutex;
 	struct timeval	start;
 	pthread_cond_t	stop;
 }		t_sim;

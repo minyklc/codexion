@@ -81,7 +81,6 @@ void	rm_to_lqueue(t_thread *thread)
 		free(temp);
 		queue->next = NULL;
 	}
-	free(queue);
 }
 
 void	rm_to_rqueue(t_thread *thread)
