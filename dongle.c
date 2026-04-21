@@ -24,8 +24,8 @@ int	left(t_thread **thread)
 	(**thread).left->state = 1;
 	gettimeofday(&now, NULL);
 	diff = timediff(&(**thread).left->last, &now) + (**thread).pack->compile;
-	if (diff < (**thread).pack->cooldown &&
-		timediff(&(**thread).left->last, &(**thread).sim->start) != 0)
+	if (diff < (**thread).pack->cooldown && timediff(
+			&(**thread).left->last, &(**thread).sim->start) != 0)
 		usleep(((**thread).pack->cooldown - diff) * 1000);
 	if (!is_walking(thread))
 		return (pthread_mutex_unlock(&(**thread).left->mutex), 1);
@@ -51,8 +51,8 @@ int	right(t_thread **thread)
 	(**thread).right->state = 1;
 	gettimeofday(&now, NULL);
 	diff = timediff(&(**thread).right->last, &now) + (**thread).pack->compile;
-	if (diff < (**thread).pack->cooldown &&
-		timediff(&(**thread).right->last, &(**thread).sim->start) != 0)
+	if (diff < (**thread).pack->cooldown && timediff(
+			&(**thread).right->last, &(**thread).sim->start) != 0)
 		usleep(((**thread).pack->cooldown - diff) * 1000);
 	if (!is_walking(thread))
 		return (pthread_mutex_unlock(&(**thread).right->mutex), 1);

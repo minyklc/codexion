@@ -12,9 +12,11 @@ smart scheduling, the aim is to master resource synchronization before burnout s
 
 `make`
 
-`./codexion 2 100 20 20 20 3 10 fifo` (should work)
+`./codexion 200 10000 60 60 60 3 0 fifo` (should work)
 
 `./codexion 2 70 20 20 20 3 10 edf` (should burn out)
+
+`./codexion 2 1000 20 20 20 3 100 fifo` (should run without coder compiling)
 
 `./codexion 0 1000000 20 20 20 3 10 edf` (should display error message)
 

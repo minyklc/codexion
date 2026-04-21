@@ -19,9 +19,8 @@ void	fifol(t_thread *thread)
 	cond = &(*thread).left->cond;
 	if (check_length(&(*thread).left) > 0)
 		cond = &(*thread).left->queue->coder->right->cond;
-	pthread_cond_broadcast(cond);
-	// (void)cond;
-	// pthread_cond_broadcast(&(*thread).left->cond);
+	(void)cond;
+	pthread_cond_broadcast(&(*thread).left->cond);
 }
 
 void	fifor(t_thread *thread)
@@ -31,9 +30,8 @@ void	fifor(t_thread *thread)
 	cond = &(*thread).right->cond;
 	if (check_length(&(*thread).right) > 0)
 		cond = &(*thread).right->queue->coder->left->cond;
-	pthread_cond_broadcast(cond);
-	// (void)cond;
-	// pthread_cond_broadcast(&(*thread).right->cond);
+	(void)cond;
+	pthread_cond_broadcast(&(*thread).right->cond);
 }
 
 void	edfl(t_thread *thread)
@@ -46,13 +44,12 @@ void	edfl(t_thread *thread)
 	if (check_length(&(*thread).left) > 0)
 	{
 		if (timediff(&(*thread).last,
-		    &now) < timediff(&(*thread).left->queue->coder->last,
-						&now))
+				&now) < timediff(&(*thread).left->queue->coder->last,
+				&now))
 			cond = &(*thread).left->queue->coder->right->cond;
 	}
-	pthread_cond_broadcast(cond);
-	// (void)cond;
-	// pthread_cond_broadcast(&(*thread).left->cond);
+	(void)cond;
+	pthread_cond_broadcast(&(*thread).left->cond);
 }
 
 void	edfr(t_thread *thread)
@@ -65,11 +62,10 @@ void	edfr(t_thread *thread)
 	if (check_length(&(*thread).right) > 0)
 	{
 		if (timediff(&(*thread).last,
-			&now) < timediff(&(*thread).right->queue->coder->last,
-			&now))
+				&now) < timediff(&(*thread).right->queue->coder->last,
+				&now))
 			cond = &(*thread).right->queue->coder->left->cond;
 	}
-	pthread_cond_broadcast(cond);
-	// (void)cond;
-	// pthread_cond_broadcast(&(*thread).right->cond);
+	(void)cond;
+	pthread_cond_broadcast(&(*thread).right->cond);
 }
