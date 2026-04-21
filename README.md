@@ -16,7 +16,7 @@ smart scheduling, the aim is to master resource synchronization before burnout s
 
 `./codexion 2 70 20 20 20 3 10 edf` (should burn out)
 
-`./codexion 2 1000 20 20 20 3 100 fifo` (should run without coder compiling)
+`./codexion 1 1000 20 20 20 3 100 fifo` (should run without coder compiling)
 
 `./codexion 0 1000000 20 20 20 3 10 edf` (should display error message)
 
